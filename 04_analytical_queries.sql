@@ -1,9 +1,3 @@
--- =====================================================================
--- BankDB: Analytical / Showcase Queries
--- File: 04_analytical_queries.sql
--- These are the queries worth walking through in an interview - each
--- demonstrates a distinct SQL concept.
--- =====================================================================
 SET search_path TO bankdb;
 
 -- ---------------------------------------------------------------------
