@@ -1,20 +1,3 @@
--- =====================================================================
--- BankDB: Core Banking Database System
--- File: 01_schema.sql
--- Purpose: DDL - table definitions, constraints, and indexes
--- Engine: PostgreSQL 14+
--- =====================================================================
--- Design notes (for your own understanding / interview talking points):
---  - Schema is normalized to 3NF: every non-key attribute depends on the
---    whole primary key and nothing but the key (no partial or transitive
---    dependencies). E.g. branch_name is NOT stored in accounts/employees,
---    only branch_id (FK) is - avoids update anomalies.
---  - CHECK constraints enforce business rules at the DB layer, not just
---    in application code (defense in depth).
---  - Every FK has a matching index (Postgres does not auto-index FKs)
---    since they're used constantly in JOINs.
--- =====================================================================
-
 DROP SCHEMA IF EXISTS bankdb CASCADE;
 CREATE SCHEMA bankdb;
 SET search_path TO bankdb;
