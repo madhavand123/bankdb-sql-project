@@ -1,8 +1,3 @@
--- =====================================================================
--- BankDB: Sample Data
--- File: 02_sample_data.sql
--- Purpose: Populate tables with realistic data to run/demo queries on
--- =====================================================================
 SET search_path TO bankdb;
 
 -- 1. Branches
