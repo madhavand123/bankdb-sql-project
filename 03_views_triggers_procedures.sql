@@ -1,7 +1,3 @@
--- =====================================================================
--- BankDB: Views, Triggers, Functions & Stored Procedures
--- File: 03_views_triggers_procedures.sql
--- =====================================================================
 SET search_path TO bankdb;
 
 -- =====================================================================
@@ -113,21 +109,12 @@ CREATE TRIGGER trg_apply_transaction
     FOR EACH ROW
     EXECUTE FUNCTION fn_apply_transaction();
 
--- NOTE ON DEMO DATA: 02_sample_data.sql inserts transactions with a
--- pre-computed balance_after AND accounts already at their final balance,
--- so re-running these triggers on that seed data would double-apply the
--- deltas. In a live system you'd seed accounts at 0 and let the triggers
--- build the balances up from the transaction log. This split (seed = final
--- state, triggers = ongoing state changes) is called out explicitly in the
--- README so you can explain it in an interview.
 
 
 -- =====================================================================
 -- STORED PROCEDURE: fund transfer between two accounts
 -- =====================================================================
--- Talking point: this wraps a debit + credit in one atomic unit. If the
--- credit leg fails, the whole procedure rolls back - the classic ACID
--- "money leaves account A and arrives in account B, or neither happens".
+
 CREATE OR REPLACE PROCEDURE sp_transfer_funds(
     p_from_account INT,
     p_to_account   INT,
@@ -186,5 +173,3 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
--- Example call:
--- SELECT fn_calculate_emi(800000, 9.25, 60);
