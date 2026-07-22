@@ -119,7 +119,7 @@ CREATE TRIGGER trg_apply_transaction
 -- deltas. In a live system you'd seed accounts at 0 and let the triggers
 -- build the balances up from the transaction log. This split (seed = final
 -- state, triggers = ongoing state changes) is called out explicitly in the
--- README so you can explain it in an interview.
+-- README
 
 
 -- =====================================================================
