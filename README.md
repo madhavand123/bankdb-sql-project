@@ -2,8 +2,6 @@
 
 A compact, resume-ready DBMS project modeling a bank's core operations:
 customers, branches, accounts, cards, transactions, loans, and repayments.
-Built to be **fully explainable in an interview** — every design choice
-below is something you should be able to defend out loud.
 
 Engine: **PostgreSQL 14+**. Files run in order 01 → 04.
 
@@ -25,8 +23,8 @@ psql -U postgres -f 02_sample_data.sql
 psql -U postgres -f 03_views_triggers_procedures.sql
 psql -U postgres -f 04_analytical_queries.sql
 ```
-All four were tested end-to-end (including the trigger and procedure logic)
-before being handed to you — they run cleanly with no errors.
+All four run end-to-end with no errors, including the trigger and
+procedure logic.
 
 ---
 
@@ -43,9 +41,9 @@ Key relationships (all 1:N):
   audit rows whenever its balance changes.
 - A **Loan** has many **Loan_Repayments**.
 
-This is intentionally a **star-ish, mostly-1:N** shape — no many-to-many
-relationships, so there are no junction/bridge tables to explain. That's a
-deliberate simplicity choice, not an oversight — flag it if asked.
+This is a star-ish, mostly-1:N shape — no many-to-many relationships,
+so there are no junction/bridge tables. A deliberate simplicity choice
+rather than an oversight.
 
 ---
 
@@ -87,18 +85,17 @@ Keeping `branch_name`/`city` only in `branches` and referencing it by
 schema does that everywhere: attribute names never get duplicated across
 tables — only IDs (foreign keys) cross table boundaries.
 
-If an interviewer pushes further: the one place with a soft, real-world
-assumption is `beneficiaries` (name + bank + account number could in
-theory always co-occur the same way for the same external account, which
-would argue for pulling them into their own `external_accounts` table).
-It's left as one table here on purpose, since these are facts about an
-*external* bank we don't control or query independently — splitting it
-further would add a table without adding any query or integrity benefit,
-which is its own valid data-modeling judgment call worth mentioning.
+The one place with a soft, real-world assumption is `beneficiaries`
+(name + bank + account number could in theory always co-occur the same
+way for the same external account, which would argue for pulling them
+into their own `external_accounts` table). It's left as one table here
+on purpose, since these are facts about an *external* bank not
+controlled or queried independently — splitting it further would add a
+table without adding any query or integrity benefit.
 
 ---
 
-## 4. Concepts this project lets you talk about
+## 4. Key concepts demonstrated
 
 - **Normalization**: 3NF → BCNF reasoning above (section 3).
 - **Constraints as business rules**: `CHECK` constraints for age ≥ 18,
@@ -131,15 +128,13 @@ which is its own valid data-modeling judgment call worth mentioning.
 
 ---
 
-## 5. One honest caveat worth knowing (don't get caught off guard)
+## 5. Known limitation
 
 `02_sample_data.sql` inserts accounts already at their **final** balance
 and transactions with a matching pre-computed `balance_after` — it seeds
 a snapshot, not a replayed history. The triggers in `03_...sql` are
 written for the **live/ongoing** system: new transactions inserted after
-setup will correctly update `accounts.balance` and log to
-`account_audit_log`. If you re-ran the seed transactions *through* the
-trigger, balances would double-count. This is a normal real-world
-seeding pattern (seed = current state, triggers = future deltas) but
-say so proactively if asked — it shows you understand *why* the split
-exists rather than having missed it.
+setup correctly update `accounts.balance` and log to
+`account_audit_log`. Re-running the seed transactions *through* the
+trigger would double-count. This is a normal real-world seeding pattern
+— seed data represents current state, triggers handle future deltas.
