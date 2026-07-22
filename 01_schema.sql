@@ -4,7 +4,6 @@
 -- Purpose: DDL - table definitions, constraints, and indexes
 -- Engine: PostgreSQL 14+
 -- =====================================================================
--- Design notes (for your own understanding / interview talking points):
 --  - Schema is normalized to 3NF: every non-key attribute depends on the
 --    whole primary key and nothing but the key (no partial or transitive
 --    dependencies). E.g. branch_name is NOT stored in accounts/employees,
